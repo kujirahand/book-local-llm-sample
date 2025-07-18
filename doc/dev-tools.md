@@ -11,7 +11,7 @@ Ollama
 [URL] https://ollama.com/
 ```
 
-# WSLをインストールしよう
+## WSLをインストールしよう
 
 WindowsにWSLをインストールすることで、Linux環境を手軽に利用できます。PowerShellを管理者権限で起動して、下記のコマンドを実行しましょう。WSLをインストールしたら、Microsoft StoreからUbuntu 24をインストールします。
 
@@ -48,4 +48,3 @@ Visual Studio Codeは、Microsoftが提供する無料のコードエディタ�
 Visual Studio Code
 [URL] https://code.visualstudio.com/
 ```
-
