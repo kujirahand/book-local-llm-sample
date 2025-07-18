@@ -1,0 +1,7 @@
+モデル, JCommonsenseQA, JSQuAD, JNLI, JSTS
+gemma3:4b, 82%, 88%, 25%, 1.26
+gemma3n:e4b, 87%, 94%, 64%, 1.11
+llama3.1:8b, 64%, 92%, 12%, 3.95
+qwen3:8b, 94%, 88%, 70%, 1.10
+deepseek-r1:8b, 73%, 0%, 0%, 12.64
+
