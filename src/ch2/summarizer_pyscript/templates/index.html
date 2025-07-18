@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>文章要約アプリ(PyScript対応版)</title>
+    <!-- PyScriptのライブラリを取り込み --- (*1) -->
+    <link rel="stylesheet" href="https://pyscript.net/releases/2025.3.1/core.css">
+    <script type="module" src="https://pyscript.net/releases/2025.3.1/core.js"></script>
+</head>
+<body>
+    <h1>文章要約アプリ(PyScript対応版)</h1>
+    <!-- 入力用テキストボックス-->
+    <textarea id="input_txt" rows="10" cols="80"
+        placeholder="ここに文章を入力してください"></textarea>
+    <br><button id="run_btn">要約する</button>
+    <!-- 要約結果の表示 -->
+    <h2>要約結果</h2>
+    <p id="result_txt"></p>
+</body>
+<script type="py">
+    # PyScript用のライブラリを取り込み --- (*2)
+    from pyscript import document, fetch
+    from pyodide.ffi import create_proxy
+    import json
+    # HTMLの要素を取得 --- (*3)
+    run_btn = document.getElementById("run_btn");
+    input_txt = document.getElementById("input_txt");
+    result_txt = document.getElementById("result_txt");    
+    # ボタンを押した時の処理 --- (*4)
+    async def run_btn_click(event):
+        # ボタンを無効化 --- (*5)
+        run_btn.disabled = True;
+        result_txt.innerText = "...要約中..."
+        # Ajax通信を行う --- (*6)
+        response = await fetch(
+            "/api/make_summary",
+            method="POST",
+            headers={"Content-Type": "application/json"},
+            body=json.dumps({"text": input_txt.value})
+        )
+        result = await response.text()
+        # 要約結果を表示 --- (*7)
+        result_txt.innerText = json.loads(result)["result"];
+        # ボタンを有効に戻す
+        run_btn.disabled = False;
+    # 関数をボタンのイベントとして登録 --- (*8)
+    run_btn.addEventListener("click", create_proxy(run_btn_click))
+</script>
+</html>

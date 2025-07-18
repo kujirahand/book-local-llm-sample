@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>文章要約アプリ(Ajax対応版)</title>
+</head>
+<body>
+    <h1>文章要約アプリ(Ajax対応版)</h1>
+    <!-- 入力用テキストボックス-->
+    <textarea id="input_txt" rows="10" cols="80"
+        placeholder="ここに文章を入力してください"></textarea>
+    <br><button id="run_btn">要約する</button>
+    <!-- 要約結果の表示 -->
+    <h2>要約結果</h2>
+    <p id="result_txt"></p>
+</body>
+<script type="text/javascript">
+    // HTMLの要素を取得 --- (*1)
+    const run_btn = document.getElementById("run_btn");
+    const input_txt = document.getElementById("input_txt");
+    const result_txt = document.getElementById("result_txt");
+    // ボタンを押した時の処理 --- (*2)
+    run_btn.addEventListener("click", async function () {
+        // ボタンを無効化 --- (*3)
+        run_btn.disabled = true;
+        try {
+            // Ajax通信を行う --- (*4)
+            const url = "/api/make_summary";
+            const data = { text: input_txt.value };
+            const options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            };
+            const response = await fetch(url, options);
+            const result_obj = await response.json();
+            // 要約結果を表示 --- (*5)
+            result_txt.innerText = result_obj.result;
+        } catch (error) {
+            console.error("Error:", error);
+            result_txt.innerText = "要約に失敗しました。";
+        }
+        // ボタンを有効に戻す --- (*6)
+        run_btn.disabled = false;
+    });
+</script>
+</html>

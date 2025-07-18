@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- PyScriptのライブラリを取り込み -->
+    <link rel="stylesheet" href="https://pyscript.net/releases/2025.3.1/core.css">
+    <script type="module" src="https://pyscript.net/releases/2025.3.1/core.js"></script>
+    <!-- Socket.IOライブラリを取り込む -->
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+</head>
+<body>
+    <h1>簡単チャットアプリ</h1><!-- HTMLのインターフェイス -->
+    <div id="chatlog"></div>
+    <div style="padding: 0.5em; background-color: #f0f0f0;">
+        <input type="text" id="message_txt" placeholder="ここにメッセージ" />
+        <button id="send_btn">送信</button>
+    </div>
+</body>
+<script type="py">
+    # PyScript用のライブラリを取り込む
+    from pyodide.ffi import create_proxy, to_js
+    from pyscript import document, window, WebSocket
+    from js import io # Socket.IOのライブラリをインポート
+    from datetime import datetime
+    import html
+
+    # HTMLの要素を取得
+    chat_div = document.getElementById("chatlog")
+    message_input = document.getElementById("message_txt")
+    send_button = document.getElementById("send_btn")
+    # Socket.IOのインスタンスを作成
+    socket = io()
+    
+    # チャット履歴を管理するための変数 --- (*1)
+    history = [{
+        "role": "system",
+        "content": "あなたは親切なアシスタントです。"
+    }]
+
+    # HTMLにメッセージを表示する関数を定義
+    def add_message(sender, message):
+        now = datetime.now().strftime("%H:%M:%S")
+        message = html.escape(message).replace("\n", "<br>")
+        chat_div.innerHTML += f"{now} <b>{sender}</b>: {message}<hr>"
+    
+    # Socket.IOのイベントを処理する関数を定義
+    def on_connect():
+        add_message("■", "サーバーに接続")
+    def on_disconnect(event):
+        add_message("■", "サーバーから切断")
+    def on_error(event):
+        add_message("■", f"エラー: {event}")
+    def on_bot_response(event):
+        # 受信したメッセージをチャット履歴に追加 --- (*2)
+        add_message("Bot", event.message)
+        # チャット履歴にメッセージを追加
+        history.append({
+            "role": "assistant",
+            "content": event.message
+        })
+
+    # Socket.IOのイベントを登録
+    socket.on("connect", create_proxy(on_connect))
+    socket.on("disconnect", create_proxy(on_disconnect))
+    socket.on("error", create_proxy(on_error))
+    socket.on("bot_response", create_proxy(on_bot_response))
+
+    # メッセージ送信ボタンのクリックイベントを登録 --- (*3)
+    def send_message(event):
+        message = message_input.value
+        if message:
+            add_message("You", message) # HTMLに追加
+            obj = {
+                "role": "user",
+                "content": message
+            }
+            history.append(obj)  # チャット履歴に追加
+            # WebSocketサーバーに送信
+            socket.emit(
+                "user_message",
+                to_js({"messages": history}))
+            message_input.value = ""
+    # メッセージ送信ボタンのクリックイベントを登録
+    send_button.addEventListener(
+        "click",
+        create_proxy(send_message))
+</script>
+</html>

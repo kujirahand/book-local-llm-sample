@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>文章要約アプリ</title>
+</head>
+<body>
+    <h1>文章要約アプリ</h1>
+    <!-- フォーム要素 --> <!-- --- (*1)-->
+    <form method="POST">
+        <textarea name="text" rows="10" cols="80"
+            placeholder="ここに文章を入力してください">{{ text }}
+        </textarea><br>
+        <button type="submit">要約する</button>
+    </form>
+    <!-- 要約結果の表示 --> <!-- --- (*2)-->
+    {% if summary %}
+        <h2>要約結果</h2>
+        <p>{{ summary }}</p>
+    {% endif %}
+</body>
+</html>
