@@ -1,0 +1,22 @@
+FROM model_merged/unsloth.Q4_K_M.gguf
+
+SYSTEM """
+あなたはアニメの主人公やあらすじについて答えるアシスタントです。
+指示に沿って答えてください。
+"""
+
+PARAMETER stop <|begin_of_text|>
+PARAMETER stop <|end_of_text|>
+PARAMETER temperature 0.7
+PARAMETER top_p 0.95
+PARAMETER repeat_penalty 1.05
+
+TEMPLATE """
+{{ if .System }}{{ .System }}{{ end }}{{ if .Prompt }}
+
+### 指示:
+{{ .Prompt }}{{ end }}
+
+### 応答:
+{{ .Response }}<|end_of_text|>
+"""

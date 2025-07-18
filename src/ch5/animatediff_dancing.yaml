@@ -1,0 +1,17 @@
+# AnimeDiffで動画を2つ作成する
+- dreambooth_path: "models/DreamBooth_LoRA/leosamsHelloworldXL_filmGrain20.safetensors"
+  lora_model_path: "models/DreamBooth_LoRA/TUSUN.safetensors"
+  lora_alpha: 0.6
+  inference_config: "configs/inference/inference-v3.yaml"
+  motion_module: "models/Motion_Module/v3_sd15_mm.ckpt"
+  steps: 25
+  guidance_scale: 7.5
+  # 以下に作成したい動画の数だけプロンプトを並べる
+  prompt:
+    - "A cute anime-style teddy bear is dancing joyfully, playful atmosphere"
+    - "1girl is dancing joyfully, anime style, masterpiece"
+
+  # 以下にネガティブプロンプトを並べる
+  n_prompt:
+    - "worst quality, low quality, normal quality, lowres, bad hands, watermark"
+    - "worst quality, low quality, normal quality, lowres, bad hands, watermark"
