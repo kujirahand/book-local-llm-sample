@@ -1,0 +1,116 @@
+/* epub css */
+body {
+    margin: 5%;
+    text-align: justify;
+    font-size: medium;
+    line-height: 1.6;
+}
+code { font-family: monospace; }
+h1 {
+    font-family: sans-serif;
+    font-weight: bold;
+    text-align: left;
+    text-indent: 0em;
+    font-size: 1.1em;
+}
+h2 {
+    font-family: sans-serif;
+    text-align: left;
+    text-indent: 0em;
+    font-size: 1.1em;
+}
+h3 {
+    font-family: sans-serif;
+    text-align: left;
+    text-indent: 0em;
+    font-size: 1em;
+}
+h4 {
+    font-family: sans-serif;
+    text-align: left;
+}
+h5 {
+    font-family: sans-serif;
+    text-align: left;
+}
+h6 {
+    font-family: sans-serif;
+    text-align: left;
+}
+h1.title { }
+ol.toc { padding: 0; margin-left: 1em; }
+ol.toc li { list-style-type: none; margin: 0; padding: 0; }
+p{
+    font-family: serif;
+    text-indent: 0;
+    margin: 0.6em 0;
+}
+strong{
+    font-family: sans-serif;
+    font-weight: normal;
+}
+table {
+    border-collapse: collapse;
+    border-style: solid;
+    border-width: 1px;
+}
+th {
+    font-family: sans-serif;
+    padding: 0 0.5em;
+    border-style: solid;
+    border-width: 1px;
+}
+td {
+    padding: 0 0.5em;
+    border-style: none solid;
+    border-width: 1px;
+}
+li { font-family: serif; }
+dt { font-family: sans-serif; }
+dd { font-family: serif; }
+div.author {
+    font-family: sans-serif;
+}
+span.author_title {
+    font-size: 80%;
+}
+div.author_address {
+    font-family: sans-serif;
+    font-size: 80%;
+}
+div.cite_author {
+    text-align: right;
+    font-family: serif;
+}
+figure { width: 90% }
+img { width: 100% }
+ul.label_9_7 {
+    list-style-type: none;
+    padding-left: 0;
+}
+ul.label_9_7 li {
+    text-indent: -2em;
+    padding-left: 2em;
+}
+ul.label_9_7 li:before {
+    content: "9.7";
+}
+.with_round_brackets ol {
+    margin-left: 2em;
+    counter-reset: cnt;
+}
+.with_round_brackets ol li {
+    list-style-type: none;
+    counter-increment: cnt;
+    position: relative;
+}
+.with_round_brackets ol li:before {
+    content: "(" counter(cnt) ")";
+    display: inline-block;
+    margin-left: -2em;
+    width: 1.5em;
+    text-align: right;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
