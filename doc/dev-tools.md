@@ -4,7 +4,7 @@
 
 以下のページで詳しい手順を紹介します。
 
-[note.com > ローカルLLM本のセットアップ方法(詳細)](https://note.com/kujirahand/n/n697097edcf6d)
+[note.com/kujirahand > ローカルLLM本のセットアップ方法(詳細)](https://note.com/kujirahand/n/n697097edcf6d)
 
 以下は、上記の手順を簡略化したものです。
 
