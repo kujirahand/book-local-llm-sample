@@ -1,0 +1,88 @@
+# Mermaid記法のサンプル
+
+Mermaidは、マークダウン記法で図やダイアグラムを描くためのライブラリです。以下にいくつかの例を示します。
+
+## フローチャート
+
+システムの処理の流れを示すフローチャートです：
+
+```mermaid
+flowchart TD
+    A[開始] --> B{条件判定}
+    B -->|Yes| C[処理A]
+    B -->|No| D[処理B]
+    C --> E[終了]
+    D --> E
+```
+
+## シーケンス図
+
+オブジェクト間のやり取りを示すシーケンス図です：
+
+```mermaid
+sequenceDiagram
+    participant U as ユーザー
+    participant S as システム
+    participant D as データベース
+    
+    U->>S: リクエスト送信
+    S->>D: データ取得
+    D-->>S: データ返却
+    S-->>U: レスポンス送信
+```
+
+## ガントチャート
+
+プロジェクトのスケジュールを示すガントチャートです：
+
+```mermaid
+gantt
+    title プロジェクトスケジュール
+    dateFormat  YYYY-MM-DD
+    section 設計フェーズ
+    要件定義    :a1, 2024-01-01, 30d
+    基本設計    :after a1, 20d
+    section 開発フェーズ
+    実装        :2024-02-20, 45d
+    テスト      :2024-04-06, 20d
+```
+
+## クラス図
+
+オブジェクト指向設計のクラス関係を示すクラス図です：
+
+```mermaid
+classDiagram
+    class Animal {
+        +String name
+        +int age
+        +eat()
+        +sleep()
+    }
+    class Dog {
+        +String breed
+        +bark()
+    }
+    class Cat {
+        +String color
+        +meow()
+    }
+    Animal <|-- Dog
+    Animal <|-- Cat
+```
+
+## 状態遷移図
+
+システムの状態変化を示す状態遷移図です：
+
+```mermaid
+stateDiagram-v2
+    [*] --> 待機中
+    待機中 --> 処理中 : 開始
+    処理中 --> 完了 : 成功
+    処理中 --> エラー : 失敗
+    完了 --> [*]
+    エラー --> 待機中 : リセット
+```
+
+これらのMermaid記法を使用することで、様々な図表を作成できます。

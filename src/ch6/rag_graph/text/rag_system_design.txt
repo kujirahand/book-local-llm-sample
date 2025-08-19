@@ -1,0 +1,55 @@
+# RAGシステムの構成と処理フロー
+
+## システムアーキテクチャ
+
+RAG（Retrieval-Augmented Generation）システムは、以下のような構成になっています：
+
+```mermaid
+graph TD
+    A[テキストファイル] --> B[前処理・分割]
+    B --> C[Embedding生成]
+    C --> D[ベクトルDB<br/>Chroma]
+    E[ユーザークエリ] --> F[Embedding生成]
+    F --> G[類似度検索]
+    D --> G
+    G --> H[関連文書取得]
+    H --> I[LLM<br/>Qwen3:8b]
+    E --> I
+    I --> J[回答生成]
+```
+
+## 処理シーケンス
+
+ユーザーからの質問に対する処理の流れです：
+
+```mermaid
+sequenceDiagram
+    participant U as ユーザー
+    participant W as Webアプリ
+    participant R as RAGシステム
+    participant V as ベクトルDB
+    participant L as LLM
+    
+    U->>W: 質問入力
+    W->>R: ask_question()
+    R->>V: 類似度検索
+    V-->>R: 関連文書返却
+    R->>L: プロンプト生成
+    L-->>R: 回答生成
+    R-->>W: 回答と参考文書
+    W-->>U: 結果表示
+```
+
+## データ処理パイプライン
+
+```mermaid
+flowchart LR
+    A[RAWテキスト] --> B[チャンク分割]
+    B --> C[トークン化]
+    C --> D[Embedding変換]
+    D --> E[ベクトル保存]
+    E --> F[インデックス構築]
+    F --> G[検索可能状態]
+```
+
+このシステムによって、大量のテキストデータから関連する情報を効率的に検索し、LLMを使用して適切な回答を生成できます。

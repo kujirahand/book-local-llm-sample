@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>作図システム</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <form class="question-form" onsubmit="askQuestion(event)">
+            <div class="form-group">
+                <label for="question">作図したいキーワードを入力:</label>
+                <input type="text" id="question" name="question" value="蕎麦について">
+            </div>
+            <button type="submit" class="btn">作成</button>
+        </form>
+        <div id="result"></div>
+    </div>
+    <script>
+        // Mermaidの初期化
+        mermaid.initialize({ startOnLoad: false });
+        // 作成ボタンを押した時
+        async function askQuestion(event) {
+            event.preventDefault();            
+            const question = document.getElementById('question').value;
+            const result = document.getElementById('result');
+            // ローディング表示
+            result.innerHTML = '少々お待ちください';            
+            try {
+                const response = await fetch('/ask', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ question: question })
+                });                
+                const data = await response.json();
+                
+                if (data.error) {
+                    result.innerHTML = `<p style="color: red;">エラー: ${data.error}</p>`;
+                } else {
+                    displayAnswer(data.answer, data.mermaid);
+                }
+            } catch (error) {
+                result.innerHTML = `<p style="color: red;">エラーが発生しました: ${error.message}</p>`;
+            }
+        }
+
+        async function displayAnswer(answer, mermaidCode) {
+            const result = document.getElementById('result');
+            
+            // 回答の表示
+            let html = `
+                <div class="answer-section">
+                    <div id="mermaid-output"></div>
+                    <pre class="answer-content">${answer}</pre>
+                </div>
+            `;            
+            result.innerHTML = html;
+            
+            // Mermaidの図を生成
+            if (mermaidCode) {
+                try {
+                    const { svg } = await mermaid.render('mermaid-graph', mermaidCode);
+                    document.getElementById('mermaid-output').innerHTML = svg;
+                } catch (error) {
+                    console.error('Mermaid rendering error:', error);
+                    document.getElementById('mermaid-output').innerHTML = `<p style="color: red;">図の生成でエラーが発生しました: ${error.message}</p>`;
+                }
+            }
+        }
+    </script>
+</body>
+</html>
